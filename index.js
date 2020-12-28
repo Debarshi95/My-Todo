@@ -1,48 +1,53 @@
 const localStorage = window.localStorage;
-const todos = document.querySelector("#todos");
+const todoDiv = document.querySelector("#todos");
 const form = document.querySelector("#form");
 const input = document.querySelector("#todo");
-
+const warning = document.querySelector("#error");
 let todoList = [];
 
-(function () {
-  if (localStorage.length > 0) {
-    todoList = JSON.parse(localStorage.getItem("todos"));
-    todoList.forEach(function (todo) {
-      createTodos(todo);
-    });
-  }
-})();
-
-function createTodos(todo) {
-  const containerDiv = document.createElement("div");
-  containerDiv.appendChild(createParagraph(todo));
-  containerDiv.appendChild(createButton());
-  todos.appendChild(containerDiv);
-  createButtonClear();
+if (localStorage.length > 0) {
+  todoList = JSON.parse(localStorage.getItem("todos"));
+  todoList.forEach(function (todo) {
+    createTodo(todo);
+  });
 }
 
-function createParagraph(todo) {
+function createTodo(todo) {
+  const div = document.createElement("div");
+  div.appendChild(createParagraphTodo(todo));
+  div.appendChild(createIconDeleteTodo());
+  todoDiv.appendChild(div);
+}
+
+function createParagraphTodo(todo) {
   const paragraph = document.createElement("p");
   paragraph.textContent = todo;
   return paragraph;
 }
 
-function createButton() {
-  const btnDeleteTodo = document.createElement("button");
-  btnDeleteTodo.textContent = "Delete";
-  return btnDeleteTodo;
+function createIconDeleteTodo() {
+  const iconDelete = document.createElement("em");
+  iconDelete.className = "fas fa-trash-alt";
+  return iconDelete;
 }
 
 function addTodo(e) {
   e.preventDefault();
-  if (input.value == "") {
-    alert("Todo cannot be empty");
+  if (input.value === "") {
+    input.classList.add("error");
+    warning.classList.replace("hidden", "shown");
     return;
+  }
+  if (
+    input.classList.contains("error") ||
+    warning.classList.contains("shown")
+  ) {
+    input.classList.remove("error");
+    warning.classList.replace("shown", "hidden");
   }
   todoList.push(input.value);
   localStorage.setItem("todos", JSON.stringify(todoList));
-  createTodos(input.value);
+  createTodo(input.value);
   input.value = "";
 }
 
@@ -54,44 +59,13 @@ function deleteTodo(target) {
   todoList = newTodoList;
   localStorage.setItem("todos", JSON.stringify(newTodoList));
   target.parentNode.remove();
-
-  if (todoList.length === 0) {
-    removeButtonClear();
-  }
-}
-
-function deleteTodos() {
-  todoList = [];
-  localStorage.clear();
-}
-
-function createButtonClear() {
-  if (todos.querySelector("#clear")) {
-    return;
-  }
-  const button = document.createElement("button");
-  button.textContent = "Clear";
-  button.setAttribute("id", "clear");
-  button.setAttribute("type", "click");
-  todos.appendChild(button);
-}
-
-function removeButtonClear() {
-  while (todos.lastChild) {
-    todos.removeChild(todos.lastChild);
-  }
-  deleteTodos();
 }
 
 document.querySelector("#container").addEventListener("submit", addTodo);
 
-todos.addEventListener("click", function (e) {
-  if (e.target.tagName.toLowerCase() === "button" && e.target.id != "clear") {
+todoDiv.addEventListener("click", function (e) {
+  if (e.target.tagName.toLowerCase() === "em") {
     deleteTodo(e.target);
-    return;
-  }
-  if (e.target.getAttribute("id") === "clear") {
-    removeButtonClear();
   }
   e.stopPropagation();
 });

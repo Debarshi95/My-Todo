@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: white;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#container {
+  max-width: 90vw;
+  margin: 0 auto;
+  padding: 1.2rem;
+}
+form {
+  padding: 1rem 0;
+}
+form > button {
+  background-color: black;
+  color: white;
+  border: 0px solid white;
+  height: 2rem;
+  width: 4rem;
+  margin: 0 0.5rem;
+  text-transform: uppercase;
+  border-radius: 5px;
+  font-family: inherit;
+  font-weight: 900;
+}
+
+#todo {
+  border-radius: 5px;
+  height: 2rem;
+  padding: 0 5px;
+}
+
+#todos > div {
+  padding: 1.3rem 0;
+  border-bottom: 1.5px solid rebeccapurple;
+  display: flex;
+}
+
+#todos > div > p {
+  width: 80vw;
+  margin: 0 0.3rem;
+}
+
+#todos > div > em {
+  float: right;
+  align-self: center;
+}
+.error {
+  border-color: red;
+}
+.hidden {
+  visibility: hidden;
+}
+.shown {
+  visibility: visible;
+  color: red;
+  font-size: 0.9rem;
+  display: block;
+  margin: 0.3rem 0.1rem;
+}
+
+@media only screen and (min-width: 540px) {
+  #container {
+    width: 70vw;
+  }
+}
+
+@media only screen and (min-width: 740px) {
+  #container {
+    width: 55vw;
+  }
+}
+
+@media only screen and (min-width: 928px) {
+  #container {
+    width: 40vw;
+  }
+}
